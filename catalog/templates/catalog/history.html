@@ -1,0 +1,20 @@
+<h2>My Borrow History</h2>
+<ul>
+{% for entry in history %}
+    <li>
+        {{ entry.book.title }} - Borrowed on {{ entry.borrowed_at|date:"F j, Y, g:i a" }}
+        {% if entry.returned_at %}
+            <br>Returned on {{ entry.returned_at|date:"F j, Y, g:i a" }}
+        {% else %}
+            <form action="{% url 'return_book' entry.book.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Return</button>
+            </form>
+        {% endif %}
+    </li>
+{% empty %}
+    <li>You haven't borrowed any books yet.</li>
+{% endfor %}
+</ul>
+
+<p><a href="{% url 'book_list' %}">Back to Books</a></p>

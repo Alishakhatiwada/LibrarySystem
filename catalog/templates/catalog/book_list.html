@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Available Books</h2>
+
+<!-- Search form -->
+<form method="get">
+    <input type="text" name="q" placeholder="Search by title or author" value="{{ request.GET.q }}">
+    <button type="submit">Search</button>
+</form>
+
+<hr>
+
+<ul>
+    {% for book in books %}
+    <li>
+        {{ book.title }} by {{ book.author }} ({{ book.isbn }}) -
+        {% if book.available %}
+            <strong>Available</strong>
+            <a href="{% url 'borrow_book' book.id %}">[Borrow]</a>
+        {% else %}
+            <strong>Not Available</strong>
+            {# Check if the logged-in user borrowed it and it's not yet returned #}
+            {% for borrow in book.borrow_set.all %}
+                {% if borrow.user == request.user and not borrow.return_date %}
+                    <a href="{% url 'return_book' book.id %}">[Return]</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </li>
+    {% empty %}
+        <li>No books found.</li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<a href="{% url 'history' %}">View My History</a>
+{% endblock %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library System</title>
+</head>
+<body>
+    <h1>Library Management</h1>
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }} |
+        <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer;">
+                Logout
+            </button>
+        </form>
+        </p>
+    {% else %}
+        <p><a href="{% url 'login' %}">Login</a> | <a href="{% url 'signup' %}">Signup</a></p>
+    {% endif %}
+    <hr>
+    {% block content %}{% endblock %}
+</body>
+</html>

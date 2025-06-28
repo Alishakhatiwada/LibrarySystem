@@ -1,0 +1,12 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h1>User Dashboard</h1>
+  <p>Welcome, {{ user.username }}!</p>
+
+  <ul>
+    <li><a href="{% url 'book_list' %}">View Available Books</a></li>
+    <li><a href="{% url 'history' %}">View Borrowing History</a></li>
+    <li><a href="{% url 'logout' %}">Logout</a></li>
+  </ul>
+{% endblock %}
